@@ -50,20 +50,34 @@ public class Function
                         Reprompt rp = new Reprompt("What's next?");
                         return ResponseBuilder.Ask("Here's some help. What's next?", rp, session);
                     }
-                case "NewGameIntent":
+                case "AddItem":
                     {
-                        session.Attributes["num_guesses"] = 0;
+                        /*session.Attributes["num_guesses"] = 0;
                         Random rnd = new Random();
                         Int32 magicNumber = rnd.Next(1, 10);
                         session.Attributes["magic_number"] = magicNumber;
 
                         string next = "Guess a number betwen 1 and 10";
                         Reprompt rp = new Reprompt(next);
-                        return ResponseBuilder.Ask(next, rp, session);
+                        return ResponseBuilder.Ask(next, rp, session);*/
+                        break;
                     }
-                case "AnswerIntent":
+                case "RemoveItem": {
+                    break;
+                }
+                case "CreateNewList": {
+                    break;
+                }
+                case "DeleteList":
+                {
+                    break;
+                }
+                case "MoveItem": {
+                    break;
+                }
+                case "ReadList":
                     {
-                        // check answer
+                        /*// check answer
                         string userString = intentRequest.Intent.Slots["Number"].Value;
                         Int32 userInt = 0;
                         Int32.TryParse(userString, out userInt);
@@ -81,12 +95,14 @@ public class Function
                             session.Attributes["num_guesses"] = numTries;
                         }
                         Reprompt rp = new Reprompt("speech");
-                        return ResponseBuilder.Ask(speech, rp, session);
+                        return ResponseBuilder.Ask(speech, rp, session);*/
+                        break;
                     }
+                //When software does not understand what user says
                 default:
                     {
                         log.LogLine($"Unknown intent: " + intentRequest.Intent.Name);
-                        string speech = "I didn't understand - try again?";
+                        string speech = "I didn't understand - try again or try a different command";
                         Reprompt rp = new Reprompt(speech);
                         return ResponseBuilder.Ask(speech, rp, session);
                     }
