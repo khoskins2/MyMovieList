@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-04-03T01:06:47.874Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36" etag="T5mo4tua2c_97PRtaIrp" version="21.1.2" type="device">
+<mxfile host="app.diagrams.net" modified="2023-04-03T17:52:07.147Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36" etag="SY1dliZPulFqZ8LktM5C" version="21.1.4" type="device">
   <diagram name="Page-1" id="9f46799a-70d6-7492-0946-bef42562c5a5">
-    <mxGraphModel dx="2314" dy="1656" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="none" math="0" shadow="0">
+    <mxGraphModel dx="954" dy="1415" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -36,14 +36,14 @@
         <mxCell id="GM5VxA7uI0TM_vSq0hxc-39" value="+ ItemAdder(mediaList: ArrayList[]): ItemAdder" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="78961159f06e98e8-43" vertex="1">
           <mxGeometry y="60" width="160" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="78961159f06e98e8-53" value="+ SearchList(List): void" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="78961159f06e98e8-43" vertex="1">
-          <mxGeometry y="100" width="160" height="26" as="geometry" />
+        <mxCell id="78961159f06e98e8-53" value="+ ListSearcher(mediaList[ ]: ArrayList) : ListSearcher" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="78961159f06e98e8-43" vertex="1">
+          <mxGeometry y="100" width="160" height="40" as="geometry" />
         </mxCell>
         <mxCell id="78961159f06e98e8-52" value="+ AddItem(String, List): void" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="78961159f06e98e8-43" vertex="1">
-          <mxGeometry y="126" width="160" height="26" as="geometry" />
+          <mxGeometry y="140" width="160" height="26" as="geometry" />
         </mxCell>
         <mxCell id="78961159f06e98e8-56" value="ItemRemover" style="swimlane;html=1;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=none;fontFamily=Verdana;fontSize=12" parent="1" vertex="1">
-          <mxGeometry x="620" y="-700" width="230" height="190" as="geometry" />
+          <mxGeometry x="620" y="-700" width="230" height="170" as="geometry" />
         </mxCell>
         <mxCell id="78961159f06e98e8-57" value="+ DefaultList: ArrayList[ ]" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="78961159f06e98e8-56" vertex="1">
           <mxGeometry y="26" width="230" height="26" as="geometry" />
@@ -90,8 +90,8 @@
         <mxCell id="78961159f06e98e8-91" value="+ Rename(List): void" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="78961159f06e98e8-82" vertex="1">
           <mxGeometry y="100" width="160" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="IC9TK85qPbrCsIBcjOyF-5" value="&amp;nbsp;+ SearchForList(String): void" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="78961159f06e98e8-82" vertex="1">
-          <mxGeometry y="126" width="160" height="30" as="geometry" />
+        <mxCell id="IC9TK85qPbrCsIBcjOyF-5" value="+ ListSearcher(mediaList[ ]: ArrayList) : ListSearcher" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="78961159f06e98e8-82" vertex="1">
+          <mxGeometry y="126" width="160" height="34" as="geometry" />
         </mxCell>
         <mxCell id="78961159f06e98e8-108" value="MediaRater" style="swimlane;html=1;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=none;fontFamily=Verdana;fontSize=12" parent="1" vertex="1">
           <mxGeometry x="370" y="-460" width="160" height="152" as="geometry" />
@@ -112,7 +112,7 @@
           <mxGeometry y="126" width="160" height="26" as="geometry" />
         </mxCell>
         <mxCell id="uCFpFZsV44bG8934i7FD-1" value="MediaReviewer" style="swimlane;html=1;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=none;fontFamily=Verdana;fontSize=12" parent="1" vertex="1">
-          <mxGeometry x="70" y="-180" width="210" height="160" as="geometry" />
+          <mxGeometry x="70" y="-180" width="210" height="170" as="geometry" />
         </mxCell>
         <mxCell id="GM5VxA7uI0TM_vSq0hxc-37" value="+ DefaultList: ArrayList[ ]" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="uCFpFZsV44bG8934i7FD-1" vertex="1">
           <mxGeometry y="26" width="210" height="24" as="geometry" />
@@ -126,8 +126,8 @@
         <mxCell id="uCFpFZsV44bG8934i7FD-5" value="+ Review(String): void" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="uCFpFZsV44bG8934i7FD-1" vertex="1">
           <mxGeometry y="100" width="210" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="uCFpFZsV44bG8934i7FD-6" value="+ SearchList(String, list): void" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="uCFpFZsV44bG8934i7FD-1" vertex="1">
-          <mxGeometry y="126" width="210" height="30" as="geometry" />
+        <mxCell id="uCFpFZsV44bG8934i7FD-6" value="+ ListSearcher(mediaList[ ]: ArrayList) : ListSearcher" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="uCFpFZsV44bG8934i7FD-1" vertex="1">
+          <mxGeometry y="126" width="210" height="44" as="geometry" />
         </mxCell>
         <mxCell id="78961159f06e98e8-17" value="main" style="swimlane;html=1;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=none;fontFamily=Verdana;fontSize=12" parent="1" vertex="1">
           <mxGeometry x="60" y="-700" width="210" height="300" as="geometry">
@@ -174,7 +174,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="78961159f06e98e8-95" value="ListRemover" style="swimlane;html=1;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=none;fontFamily=Verdana;fontSize=12" parent="1" vertex="1">
-          <mxGeometry x="370" y="-260" width="160" height="160" as="geometry" />
+          <mxGeometry x="370" y="-260" width="160" height="170" as="geometry" />
         </mxCell>
         <mxCell id="78961159f06e98e8-96" value="+ DefaultList[ ]: ArrayList[ ]" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="78961159f06e98e8-95" vertex="1">
           <mxGeometry y="26" width="160" height="26" as="geometry" />
@@ -188,8 +188,8 @@
         <mxCell id="78961159f06e98e8-104" value="+ Delete(LIst): void" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="78961159f06e98e8-95" vertex="1">
           <mxGeometry y="100" width="160" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="IC9TK85qPbrCsIBcjOyF-4" value="&amp;nbsp;+ SearchForList(String): void" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="78961159f06e98e8-95" vertex="1">
-          <mxGeometry y="120" width="160" height="30" as="geometry" />
+        <mxCell id="IC9TK85qPbrCsIBcjOyF-4" value="+ ListSearcher(mediaList[ ]: ArrayList) : ListSearcher" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="78961159f06e98e8-95" vertex="1">
+          <mxGeometry y="120" width="160" height="50" as="geometry" />
         </mxCell>
         <mxCell id="a-Wn17F9fYtDrYl8hySi-3" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;" parent="1" edge="1">
           <mxGeometry width="160" relative="1" as="geometry">
@@ -244,6 +244,30 @@
             <Array as="points">
               <mxPoint x="570" y="-480" />
               <mxPoint x="570" y="-590" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ltpVEvebhO4rPeDpnPIz-1" value="ListSearcher" style="swimlane;html=1;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=none;fontFamily=Verdana;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="830" y="-470" width="230" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="ltpVEvebhO4rPeDpnPIz-2" value="+ DefaultList: ArrayList[ ]" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="ltpVEvebhO4rPeDpnPIz-1">
+          <mxGeometry y="26" width="230" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="ltpVEvebhO4rPeDpnPIz-3" value="" style="line;html=1;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="ltpVEvebhO4rPeDpnPIz-1">
+          <mxGeometry y="52" width="230" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="ltpVEvebhO4rPeDpnPIz-4" value="+ ListSearcher(mediaList[]: ArrayList[]): ListSearcher" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="ltpVEvebhO4rPeDpnPIz-1">
+          <mxGeometry y="60" width="230" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="ltpVEvebhO4rPeDpnPIz-5" value="+ Search(list: ArrayList[ ], item: Amazon.object): boolean" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="ltpVEvebhO4rPeDpnPIz-1">
+          <mxGeometry y="94" width="230" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="ltpVEvebhO4rPeDpnPIz-14" value="" style="edgeStyle=orthogonalEdgeStyle;elbow=horizontal;endArrow=block;html=1;rounded=0;endSize=12;startSize=6;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endFill=0;dashed=1;" edge="1" parent="1" target="ltpVEvebhO4rPeDpnPIz-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="570" y="-500" as="sourcePoint" />
+            <mxPoint x="950" y="-500" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="945" y="-500" />
             </Array>
           </mxGeometry>
         </mxCell>
