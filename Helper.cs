@@ -1,6 +1,6 @@
-public class Helper {
+public class Helper { // my favorite of the many class names -dustin
 
-    pubic Helper(){
+    public Helper(){
         //constuctor goes here
 
     }
