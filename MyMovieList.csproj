@@ -14,6 +14,7 @@
     <PackageReference Include="Alexa.NET" Version="1.22.0-preview" />
     <PackageReference Include="Amazon.Lambda.Core" Version="2.1.0" />
     <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3-beta1" />
     <PackageReference Include="System.Json" Version="4.7.1" />
   </ItemGroup>
