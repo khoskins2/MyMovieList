@@ -46,8 +46,7 @@ public class MyMovieList
         if (input.GetRequestType() == typeof(LaunchRequest))
         {
             string speech = "Welcome to my media list!";
-            Reprompt rp = new Reprompt("Say new game to start");
-            return ResponseBuilder.Ask(speech, rp, session);
+            return ResponseBuilder.Ask(speech, session);
         }
         else if (input.GetRequestType() == typeof(SessionEndedRequest))
         {
@@ -68,14 +67,14 @@ public class MyMovieList
                     }
                 case "AddItem":
                     {
-                        /*session.Attributes["num_guesses"] = 0;
-                        Random rnd = new Random();
-                        Int32 magicNumber = rnd.Next(1, 10);
-                        session.Attributes["magic_number"] = magicNumber;
+                       /*
+                        * Item has 3 possible slot types:
+                        * movie
+                        * movie_series
+                        * tv_show
+                        */
 
-                        string next = "Guess a number betwen 1 and 10";
-                        Reprompt rp = new Reprompt(next);
-                        return ResponseBuilder.Ask(next, rp, session);*/
+
                         break;
                     }
                 case "RemoveItem": {
