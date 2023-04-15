@@ -3,6 +3,8 @@
 /// <summary>
 /// Summary description for ListRenamer
 /// </summary>
+/// 
+namespace MyMovieList;
 public class ListRenamer
 {
 	public ListRenamer()

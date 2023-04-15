@@ -1,10 +1,197 @@
 {
-  "exclude": [
-    "**/bin",
-    "**/bower_components",
-    "**/jspm_packages",
-    "**/node_modules",
-    "**/obj",
-    "**/platforms"
-  ]
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "my media list",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "HelloWorldIntent",
+          "slots": [],
+          "samples": [
+            "hello",
+            "how are you",
+            "say hi world",
+            "say hi",
+            "hi",
+            "say hello world",
+            "say hello"
+          ]
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.FallbackIntent",
+          "samples": []
+        },
+        {
+          "name": "AddItem",
+          "slots": [
+            {
+              "name": "movie",
+              "type": "AMAZON.Movie"
+            },
+            {
+              "name": "movie_series",
+              "type": "AMAZON.MovieSeries"
+            },
+            {
+              "name": "tv_show",
+              "type": "AMAZON.TVSeries"
+            }
+          ],
+          "samples": [
+            "Add item to list",
+            "Add a tv show to a list",
+            "Add a movie to a list",
+            "Add item",
+            "Add an item to a list"
+          ]
+        },
+        {
+          "name": "RemoveItem",
+          "slots": [],
+          "samples": [
+            "Remove tv show",
+            "Remove movie",
+            "Remove tv show from a list",
+            "Remove movie from a list",
+            "Remove item",
+            "Remove item from a list"
+          ]
+        },
+        {
+          "name": "CreateNewList",
+          "slots": [],
+          "samples": [
+            "Create list",
+            "Make list",
+            "Add list",
+            "Add a new list",
+            "Make a new list",
+            "Create a new list"
+          ]
+        },
+        {
+          "name": "DeleteList",
+          "slots": [],
+          "samples": [
+            "Remove list",
+            "Delete list",
+            "Remove a list",
+            "Delete a list"
+          ]
+        },
+        {
+          "name": "MoveItem",
+          "slots": [],
+          "samples": [
+            "Move a tv show",
+            "Move a movie",
+            "Move an item",
+            "Move an item from a list"
+          ]
+        },
+        {
+          "name": "ReadList",
+          "slots": [],
+          "samples": [
+            "I want to know what is on my list",
+            "Tell me what is on my list",
+            "Read my list",
+            "Read list",
+            "Read out my list"
+          ]
+        },
+        {
+          "name": "Helper",
+          "slots": [],
+          "samples": [
+            "how do i",
+            "how to",
+            "I don't know how to do ",
+            "Please help",
+            "Help"
+          ]
+        }
+      ],
+      "types": []
+    },
+    "dialog": {
+      "intents": [
+        {
+          "name": "DeleteList",
+          "confirmationRequired": true,
+          "prompts": {
+            "confirmation": "Confirm.Intent.381260449751"
+          },
+          "slots": []
+        },
+        {
+          "name": "RemoveItem",
+          "confirmationRequired": true,
+          "prompts": {
+            "confirmation": "Confirm.Intent.1225032996108"
+          },
+          "slots": []
+        },
+        {
+          "name": "MoveItem",
+          "confirmationRequired": true,
+          "prompts": {
+            "confirmation": "Confirm.Intent.1614419503750"
+          },
+          "slots": []
+        },
+        {
+          "name": "AddItem",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": []
+        }
+      ],
+      "delegationStrategy": "ALWAYS"
+    },
+    "prompts": [
+      {
+        "id": "Confirm.Intent.1225032996108",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Are you sure you want to remove this item?"
+          }
+        ]
+      },
+      {
+        "id": "Confirm.Intent.381260449751",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Are you sure you want to delete this list?"
+          }
+        ]
+      },
+      {
+        "id": "Confirm.Intent.1614419503750",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Are you sure you want to move this item?"
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -3,6 +3,8 @@
 /// <summary>
 /// Summary description for ListCreator
 /// </summary>
+/// 
+namespace MyMovieList;
 public class ListCreator
 {
 	public ListCreator()
