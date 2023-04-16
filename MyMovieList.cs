@@ -25,8 +25,11 @@ public class MyMovieList
         var requestType = input.GetRequestType();
         if (requestType == typeof(IntentRequest))
         {
+            var intentRequest = input.Request as IntentRequest;
+            var movieRequest = intentRequest.Intent.Slots["Movie"].Value;
             return MakeSkillResponse(
-                    $"Sure. Here is some information about this skill." + $"If you would like to create a list say, create list." + $"If you would like to delete a list, say delete list." + $"If you would like to add an item to a list, say add item to list." + $"If you would like to remove an item from a list, say remove item from list." + $"If you would like to move an item to a different list, say move item" + $"If you would like me to read the contents of a list, say read list.",
+                   $"Did you ask about {movieRequest}",
+                    // $"Sure. Here is some information about this skill." + $"If you would like to create a list say, create list." + $"If you would like to delete a list, say delete list." + $"If you would like to add an item to a list, say add item to list." + $"If you would like to remove an item from a list, say remove item from list." + $"If you would like to move an item to a different list, say move item" + $"If you would like me to read the contents of a list, say read list.",
                     true);
         }
         else
