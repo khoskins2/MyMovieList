@@ -5,7 +5,8 @@ using Alexa.NET.Response;
 using Amazon.Lambda.Core;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
-[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
+[assembly: LambdaSerializerAttribute(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
+
 
 namespace MyMovieList;
     public class function2
@@ -25,13 +26,13 @@ namespace MyMovieList;
             if (requestType == typeof(IntentRequest))
             {
                 return MakeSkillResponse(
-                        $"Hello Infotec! This is the first response from your Alexa skill using c sharp.",
+                        $"Sure. Here is some information about this skill." + $"If you would like to create a list say, create list." + $"If you would like to delete a list, say delete list." + $"If you would like to add an item to a list, say add item to list." + $"If you would like to remove an item from a list, say remove item from list." + $"If you would like to move an item to a different list, say move item" + $"If you would like me to read the contents of a list, say read list.",
                         true);
             }
             else
             {
                 return MakeSkillResponse(
-                        $"I don't know how to handle this intent. Please say something like Alexa, ask {INVOCATION_NAME} about Canada.",
+                        $"I don't know how to handle this intent.",
                         true);
             }
         }
@@ -39,7 +40,7 @@ namespace MyMovieList;
 
         private SkillResponse MakeSkillResponse(string outputSpeech,
             bool shouldEndSession,
-            string repromptText = "Just say, tell me about Canada to learn more. To exit, say, exit.")
+            string repromptText = "If you need help just say, help!")
         {
             var response = new ResponseBody
             {
