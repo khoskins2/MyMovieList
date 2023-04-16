@@ -12,37 +12,64 @@ using System.Runtime.InteropServices;
 using System.Web.Http;
 
 namespace MyMovieList;
-public class Helper { // my favorite of the many class names -dustin
+public class Helper
+{ // my favorite of the many class names -dustin
 
-    public Helper(){
-        //constuctor goes here
+    private static HttpClient _httpClient;
+    public const string INVOCATION_NAME = "Helper";
 
+    public Helper()
+    {
+        _httpClient = new HttpClient();
     }
 
-    [HttpPost, Route("api/alexa/demo")]
-    public dynamic HelperClass(dynamic request)
+    public SkillResponse FunctionHandler(SkillRequest input, ILambdaContext context)
     {
-        return new
+
+        var requestType = input.GetRequestType();
+        if (requestType == typeof(IntentRequest))
         {
-            version = "1.0",
-            sessionAttributes = new { },
-            response = new
-            {
-                outputSpeech = new
-                {
-                    //What Alexa will read out to you
-                    type = "PlainText",
-                    text = "Whatever Alexa says"
-                },
-                card = new
-                {
-                    type = "Simple",
-                    title = "Helper Class",
-                    content = "Whatever Alexa says"
-                },
-                //shouldEndSession property of the response object in a skill that requires multiple interactions with Alexa, you set this to false
-                shouldEndSession = false
-            }
+            var intentRequest = input.Request as IntentRequest;
+            var askForHelp = intentRequest.Intent.Slots["Help"].Value;
+            return MakeSkillResponse(
+                    $"You would like more information on how to use this skill." +
+                    $"If you want to create a new list, say create list." +
+                    $"If you would like to delete a list, say delete list." +
+                    $"If you would like to add an item to a list, say add item to list." +
+                    $"If you would like to delete an item from a list, say remove item from list" +
+                    $"If you would like to move an item from one list to another, say move item to a different list." +
+                    $"If you would like me to read out a list, say read list.",
+                    true);
+        }
+        else
+        {
+            return MakeSkillResponse(
+                    $"I don't know how to handle this intent. Please say something like Alexa, {INVOCATION_NAME}",
+                    true);
+        }
+    }
+
+
+    private SkillResponse MakeSkillResponse(string outputSpeech,
+        bool shouldEndSession,
+        string repromptText = "Just say, tell me about Canada to learn more. To exit, say, exit.")
+    {
+        var response = new ResponseBody
+        {
+            ShouldEndSession = shouldEndSession,
+            OutputSpeech = new PlainTextOutputSpeech { Text = outputSpeech }
         };
+
+        if (repromptText != null)
+        {
+            response.Reprompt = new Reprompt() { OutputSpeech = new PlainTextOutputSpeech() { Text = repromptText } };
+        }
+
+        var skillResponse = new SkillResponse
+        {
+            Response = response,
+            Version = "1.0"
+        };
+        return skillResponse;
     }
 }

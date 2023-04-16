@@ -1,1 +1,5 @@
-﻿
+﻿AddItem Add item to list
+AddItem Add a tv show to a list
+AddItem Add a movie to a list
+AddItem Add item
+AddItem Add an item to a list

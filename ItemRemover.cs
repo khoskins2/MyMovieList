@@ -3,6 +3,8 @@
 /// <summary>
 /// Summary description for ItemRemover
 /// </summary>
+/// 
+namespace MyMovieList;
 public class ItemRemover
 {
 	public ItemRemover()

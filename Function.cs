@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -60,23 +60,23 @@ public class Function
                         string next = "Guess a number betwen 1 and 10";
                         Reprompt rp = new Reprompt(next);
                         return ResponseBuilder.Ask(next, rp, session);*/
-                        break;
-                    }
-                case "RemoveItem": {
-                    break;
-                }
-                case "CreateNewList": {
-                    break;
-                }
-                case "DeleteList":
-                {
-                    break;
-                }
-                case "MoveItem": {
-                    break;
-                }
-                case "ReadList":
-                    {
+                        //break;
+                   // }
+                //case "RemoveItem": {
+                 //   break;
+                //}
+               // case "CreateNewList": {
+                  //  break;
+                ////}
+                //case "DeleteList":
+                //{
+                //    break;
+                //}
+                //case "MoveItem": {
+                //    break;
+                //}
+                //case "ReadList":
+                    //{
                         /*// check answer
                         string userString = intentRequest.Intent.Slots["Number"].Value;
                         Int32 userInt = 0;
@@ -96,19 +96,20 @@ public class Function
                         }
                         Reprompt rp = new Reprompt("speech");
                         return ResponseBuilder.Ask(speech, rp, session);*/
-                        break;
-                    }
+                        //break;
+                    //}
                 //When software does not understand what user says
-                default:
-                    {
-                        log.LogLine($"Unknown intent: " + intentRequest.Intent.Name);
-                        string speech = "I didn't understand - try again or try a different command";
-                        Reprompt rp = new Reprompt(speech);
-                        return ResponseBuilder.Ask(speech, rp, session);
-                    }
-            }
-        }
-        return ResponseBuilder.Tell("Goodbye!");
-    }
-
-}
+                //default:
+                   // {
+                       // log.LogLine($"Unknown intent: " + intentRequest.Intent.Name);
+                      //  string speech = "I didn't understand - try again or try a different command";
+                      //  Reprompt rp = new Reprompt(speech);
+                      //  return ResponseBuilder.Ask(speech, rp, session);
+                    //}
+           // }
+       // }
+       // return ResponseBuilder.Tell("Goodbye!");
+    //}
+//
+//}
+//
