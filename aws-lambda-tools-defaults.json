@@ -6,7 +6,7 @@
         "dotnet lambda help",
         "All the command line options for the Lambda command can be specified in this file."
     ],
-    "profile"     : "khoskins2",
+    "profile"     : "dustin",
     "region"      : "us-east-1",
     "configuration" : "Release",
     "function-architecture" : "x86_64",
@@ -17,7 +17,7 @@
     "framework"             : "net6.0",
     "function-name"         : "movie-list",
     "package-type"          : "Zip",
-    "function-role"         : "arn:aws:iam::682005714275:role/lambda_exec_movie-list",
+    "function-role"         : "arn:aws:iam::682005714275:role/service-role/myMediaListAlexaSkill-role-aocsu94m",
     "function-subnets"      : "",
     "function-security-groups" : "",
     "tracing-mode"             : "PassThrough",
