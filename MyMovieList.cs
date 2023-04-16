@@ -18,7 +18,7 @@ namespace MyMovieList;
 public class MyMovieList
 {
 
-    
+
     /*
      *
      *
@@ -30,9 +30,38 @@ public class MyMovieList
      *
      *
      */
+    private static HttpClient _httpClient;
+    public const string INVOCATION_NAME = "My Movie List";
 
+    public MyMovieList()
+    {
+        _httpClient = new HttpClient();
+    }
 
+    public SkillResponse FunctionHandler(SkillRequest input, ILambdaContext context)
+    {
 
+        var requestType = input.GetRequestType();
+        if (requestType == typeof(IntentRequest)) // the user has made a request that is an action we can perform
+        {
+            // this is where the switch statement to our menu should go
+            // return MakeSkillResponse(
+            //$"a string I dont know we need",
+            // true);
+            return null;
+        }
+        else // the user had a bad interaction with us.
+        {
+            //return MakeSkillResponse(
+            // $"a string goes here to help the user out a bit",
+            // true);
+            return null;
+        }
+    }
+
+    
+
+    /*
     public SkillResponse FunctionHandler(SkillRequest input, ILambdaContext context)
     {
         ILambdaLogger log = context.Logger;
@@ -68,14 +97,14 @@ public class MyMovieList
                     }
                 case "AddItem":
                     {
-                        /*session.Attributes["num_guesses"] = 0;
+                        session.Attributes["num_guesses"] = 0;
                         Random rnd = new Random();
                         Int32 magicNumber = rnd.Next(1, 10);
                         session.Attributes["magic_number"] = magicNumber;
 
                         string next = "Guess a number betwen 1 and 10";
                         Reprompt rp = new Reprompt(next);
-                        return ResponseBuilder.Ask(next, rp, session);*/
+                        return ResponseBuilder.Ask(next, rp, session);
                         break;
                     }
                 case "RemoveItem": {
@@ -93,7 +122,7 @@ public class MyMovieList
                 }
                 case "ReadList":
                     {
-                        /*// check answer
+                        // check answer
                         string userString = intentRequest.Intent.Slots["Number"].Value;
                         Int32 userInt = 0;
                         Int32.TryParse(userString, out userInt);
@@ -111,7 +140,7 @@ public class MyMovieList
                             session.Attributes["num_guesses"] = numTries;
                         }
                         Reprompt rp = new Reprompt("speech");
-                        return ResponseBuilder.Ask(speech, rp, session);*/
+                        return ResponseBuilder.Ask(speech, rp, session);
                         break;
                     }
                 //When software does not understand what user says
@@ -125,6 +154,6 @@ public class MyMovieList
             }
         }
         return ResponseBuilder.Tell("Goodbye!");
-    }
+    } */
 
 }
