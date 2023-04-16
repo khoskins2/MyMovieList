@@ -1,129 +1,63 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Alexa.NET.Response;
+using System.Net.Http;
 using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
-using Newtonsoft.Json;
-using Alexa.NET;
+using Alexa.NET.Response;
 using Amazon.Lambda.Core;
 
-
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
-[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
+[assembly: LambdaSerializerAttribute(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
+
 
 namespace MyMovieList;
-
 public class MyMovieList
 {
+    private static HttpClient _httpClient;
+    public const string INVOCATION_NAME = "Country Info";
 
-    
-    /*
-     *
-     *
-     *
-     *
-     * THIS WAS JUST COPIED DIRECTLY "FUNCTION" CLASS
-     *
-     *
-     *
-     *
-     */
-
-
+    public MyMovieList()
+    {
+        _httpClient = new HttpClient();
+    }
 
     public SkillResponse FunctionHandler(SkillRequest input, ILambdaContext context)
     {
-        ILambdaLogger log = context.Logger;
-        log.LogLine($"Skill Request Object:" + JsonConvert.SerializeObject(input));
 
-        Session session = input.Session;
-        if (session.Attributes == null)
-            session.Attributes = new Dictionary<string, object>();
-
-        Type requestType = input.GetRequestType();
-        if (input.GetRequestType() == typeof(LaunchRequest))
+        var requestType = input.GetRequestType();
+        if (requestType == typeof(IntentRequest))
         {
-            string speech = "Welcome to my media list!";
-            return ResponseBuilder.Ask(speech, session);
+            return MakeSkillResponse(
+                    $"Sure. Here is some information about this skill." + $"If you would like to create a list say, create list." + $"If you would like to delete a list, say delete list." + $"If you would like to add an item to a list, say add item to list." + $"If you would like to remove an item from a list, say remove item from list." + $"If you would like to move an item to a different list, say move item" + $"If you would like me to read the contents of a list, say read list.",
+                    true);
         }
-        else if (input.GetRequestType() == typeof(SessionEndedRequest))
+        else
         {
-            return ResponseBuilder.Tell("Goodbye!");
+            return MakeSkillResponse(
+                    $"I don't know how to handle this intent.",
+                    true);
         }
-        else if (input.GetRequestType() == typeof(IntentRequest))
-        {
-            var intentRequest = (IntentRequest)input.Request;
-            switch (intentRequest.Intent.Name)
-            {
-                case "AMAZON.CancelIntent":
-                case "AMAZON.StopIntent":
-                    return ResponseBuilder.Tell("Goodbye!");
-                case "AMAZON.HelpIntent":
-                    {
-                        Reprompt rp = new Reprompt("What's next?");
-                        return ResponseBuilder.Ask("Here's some help. What's next?", rp, session);
-                    }
-                case "AddItem":
-                    {
-                       /*
-                        * Item has 3 possible slot types:
-                        * movie
-                        * movie_series
-                        * tv_show
-                        */
-
-
-                        break;
-                    }
-                case "RemoveItem": {
-                    break;
-                }
-                case "CreateNewList": {
-                    break;
-                }
-                case "DeleteList":
-                {
-                    break;
-                }
-                case "MoveItem": {
-                    break;
-                }
-                case "ReadList":
-                    {
-                        /*// check answer
-                        string userString = intentRequest.Intent.Slots["Number"].Value;
-                        Int32 userInt = 0;
-                        Int32.TryParse(userString, out userInt);
-                        bool correct = (userInt == (Int32)(long)session.Attributes["magic_number"]);
-                        Int32 numTries = (Int32)(long)session.Attributes["num_guesses"] + 1;
-                        string speech = "";
-                        if (correct)
-                        {
-                            speech = "Correct! You guessed it in " + numTries.ToString() + " tries. Say new game to play again, or stop to exit. ";
-                            session.Attributes["num_guesses"] = 0;
-                        }
-                        else
-                        {
-                            speech = "Nope, guess again.";
-                            session.Attributes["num_guesses"] = numTries;
-                        }
-                        Reprompt rp = new Reprompt("speech");
-                        return ResponseBuilder.Ask(speech, rp, session);*/
-                        break;
-                    }
-                //When software does not understand what user says
-                default:
-                    {
-                        log.LogLine($"Unknown intent: " + intentRequest.Intent.Name);
-                        string speech = "I didn't understand - try again or try a different command";
-                        Reprompt rp = new Reprompt(speech);
-                        return ResponseBuilder.Ask(speech, rp, session);
-                    }
-            }
-        }
-        return ResponseBuilder.Tell("Goodbye!");
     }
 
+
+    private SkillResponse MakeSkillResponse(string outputSpeech,
+        bool shouldEndSession,
+        string repromptText = "If you need help just say, help!")
+    {
+        var response = new ResponseBody
+        {
+            ShouldEndSession = shouldEndSession,
+            OutputSpeech = new PlainTextOutputSpeech { Text = outputSpeech }
+        };
+
+        if (repromptText != null)
+        {
+            response.Reprompt = new Reprompt() { OutputSpeech = new PlainTextOutputSpeech() { Text = repromptText } };
+        }
+
+        var skillResponse = new SkillResponse
+        {
+            Response = response,
+            Version = "1.0"
+        };
+        return skillResponse;
+    }
 }
