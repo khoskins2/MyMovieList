@@ -2,64 +2,70 @@
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
 using Amazon.Lambda.Core;
+using Newtonsoft.Json;
 using System.IO;
 
 namespace MyMovieList
 {
-    public class ListRenamer
+    public class TVAdder
     {
         public SkillResponse FunctionHandler(SkillRequest input, ILambdaContext context)
         {
             var intentRequest = input.Request as IntentRequest;
 
-            var oldListName = intentRequest.Intent.Slots["OldListName"].Value;
-            var newListName = intentRequest.Intent.Slots["NewListName"].Value;
+            var listName = intentRequest.Intent.Slots["ListName"].Value;
+            var tvShow = intentRequest.Intent.Slots["tv_show"].Value;
 
-            var oldFilePath = $"Lists/{oldListName}.json";
-            if (!File.Exists(oldFilePath))
+            // Check if list file exists
+            var listFilePath = $"Lists/{listName}.json";
+            if (!File.Exists(listFilePath))
             {
                 var errorResponse = new SkillResponse
                 {
                     Version = "1.0",
                     Response = new ResponseBody
                     {
-                        OutputSpeech = new PlainTextOutputSpeech { Text = $"The list, {oldListName} cannot be found." },
+                        OutputSpeech = new PlainTextOutputSpeech { Text = $"The list, {listName} cannot be found." },
                         ShouldEndSession = true,
                     }
                 };
                 return errorResponse;
             }
 
-            var newFilePath = $"Lists/{newListName}.json";
-            if (File.Exists(newFilePath))
+            //Load list from Json file in order to save added item
+            var list = ListManagement.LoadListFromFile(listName);
+
+            if (list.Contains(tvShow))
             {
                 var errorResponse = new SkillResponse
                 {
                     Version = "1.0",
                     Response = new ResponseBody
                     {
-                        OutputSpeech = new PlainTextOutputSpeech { Text = $"A list with the name {newListName} already exists." },
-                        ShouldEndSession = true,
+                        OutputSpeech = new PlainTextOutputSpeech { Text = $"You have already added {tvShow} to {listName}." },
+                        ShouldEndSession = true
                     }
                 };
                 return errorResponse;
             }
 
-            var list = ListManagement.LoadListFromFile(oldListName);
+            //Add item
+            list.Add(tvShow);
 
-            ListManagement.SaveListToFile(newListName, list);
+            //Save list to Json file
+            ListManagement.SaveListToFile(listName, list);
 
-            File.Delete(oldFilePath);
-
+            //Returns response to user request
             var response = new SkillResponse
             {
                 Version = "1.0",
                 Response = new ResponseBody
                 {
-                    OutputSpeech = new PlainTextOutputSpeech { Text = $"{oldListName} has been renamed to {newListName}" },
+                    OutputSpeech = new PlainTextOutputSpeech { Text = $"I've added {tvShow} items to the {listName} list." },
                     ShouldEndSession = true
                 }
             };
+
             return response;
         }
     }
