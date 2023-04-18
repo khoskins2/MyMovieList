@@ -34,6 +34,41 @@ const HelloWorldIntentHandler = {
     }
 };
 
+const CreateListIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'CreateListIntent';
+    },
+    async handle(handlerInput) {
+        const { permissions } = handlerInput.requestEnvelope.context.System.user
+        
+        //Check if permissions has been granted. If not request it.
+        if (!permissions) {
+          const permissions = [
+              'write::alexa:household:list',
+              'read::alexa:household:list'
+          ];
+          return handlerInput.responseBuilder
+            .speak('Alexa List permissions are missing. You can grant permissions within the Alexa app.')
+            .withAskForPermissionsConsentCard(permissions)
+            .getResponse();
+        }
+        
+        const listName = handlerInput.requestEnvelope.request.intent.slots.listName.value;
+    const alexaListClient = handlerInput.serviceClientFactory.getListManagementServiceClient();
+    const listMetadata = {
+      name: listName,
+      state: 'active'
+    };
+    const listId = await alexaListClient.createList(listMetadata);
+    const speechOutput = `List "${listName}" created.`;
+    return handlerInput.responseBuilder
+      .speak(speechOutput)
+      .getResponse();
+    }
+};
+
+
 const HelpIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
@@ -144,7 +179,7 @@ const ErrorHandler = {
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
-        HelloWorldIntentHandler,
+        CreateListIntentHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
         FallbackIntentHandler,
