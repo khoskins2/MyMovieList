@@ -1,35 +1,22 @@
-/* *
- * This sample demonstrates handling intents from an Alexa skill using the Alexa Skills Kit SDK (v2).
- * Please visit https://alexa.design/cookbook for additional examples on implementing slots, dialog management,
- * session persistence, api calls, and more.
- * */
+// This sample demonstrates how to use the ListManagementClient through ASK SDK v2 to create and get custom lists.
+
 const Alexa = require('ask-sdk-core');
 
+//Take these out
+const createListSpeech = "You can create a list by saying, create a custom list name and the name",
+    getListsSpeech = "You can get lists you created by saying, what are my custom lists";
+            
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     handle(handlerInput) {
-        const speakOutput = 'Welcome to my media list. To create a new list say create list or if you already have a list go ahead and manage it.';
-
+        //change what this says
+        const introSpeech = "Welcome to my media list",
+            speakOutput = `${introSpeech}.`
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .reprompt(speakOutput)
-            .getResponse();
-    }
-};
-
-const HelloWorldIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'HelloWorldIntent';
-    },
-    handle(handlerInput) {
-        const speakOutput = 'Hello World!';
-
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
             .getResponse();
     }
 };
@@ -42,7 +29,7 @@ const CreateListIntentHandler = {
     async handle(handlerInput) {
         const { permissions } = handlerInput.requestEnvelope.context.System.user
         
-        //Check if permissions has been granted. If not request it.
+        // Check if permissions has been granted. If not request it.
         if (!permissions) {
           const permissions = [
               'write::alexa:household:list',
@@ -54,20 +41,77 @@ const CreateListIntentHandler = {
             .getResponse();
         }
         
-        const listName = handlerInput.requestEnvelope.request.intent.slots.listName.value;
-    const alexaListClient = handlerInput.serviceClientFactory.getListManagementServiceClient();
-    const listMetadata = {
-      name: listName,
-      state: 'active'
-    };
-    const listId = await alexaListClient.createList(listMetadata);
-    const speechOutput = `List "${listName}" created.`;
-    return handlerInput.responseBuilder
-      .speak(speechOutput)
-      .getResponse();
+        // Create an instance of the ListManagementServiceClient
+        const listClient = handlerInput.serviceClientFactory.getListManagementServiceClient();
+        
+        
+        const listName = Alexa.getSlotValue(handlerInput.requestEnvelope, 'listName');
+        
+        // Make use listClient to make an async HTTP request to create the list
+        try {
+            const response = await listClient.createList({
+                "name": listName,
+                "state": "active"
+            }, "")
+        //To make it not catch this error you must invoke the intent with something like "create list dogs"
+        } catch(error) {
+            console.log(`~~~~ ERROR ${JSON.stringify(error)}`)
+            return handlerInput.responseBuilder
+                .speak("Your list must be given a name. Please try again")
+                //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+                .getResponse();
+        }
+        
+        return handlerInput.responseBuilder
+            .speak("List was successfully created.")
+            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+            .getResponse();
     }
 };
 
+const GetListIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GetListIntent';
+    },
+    async handle(handlerInput) {
+        // Check if permissions has been granted. If not request it.
+        const { permissions } = handlerInput.requestEnvelope.context.System.user
+        if (!permissions) {
+          const permissions = [
+              'write::alexa:household:list',
+              'read::alexa:household:list'
+          ];
+          return handlerInput.responseBuilder
+            .speak('Alexa List permissions are missing. You can grant permissions within the Alexa app.')
+            .withAskForPermissionsConsentCard(permissions)
+            .getResponse();
+        }
+        
+        const listClient = handlerInput.serviceClientFactory.getListManagementServiceClient();
+        
+        try {
+            // Use the listClient to retrieve lists for user's account
+            const response = await listClient.getListsMetadata()
+            
+            // Remove the default lists to get only the custom lists
+            const customLists = response.lists.splice(2)
+            
+            // Map to get only the list names from the object and join them separated by a comma
+            const listStr = customLists.map((list) => list.name).join(',')
+            
+            // Speak out the custom lists on the user's account
+            return handlerInput.responseBuilder
+                .speak(`You have ${customLists.length} custom lists: ${listStr}`)
+                .getResponse();
+        } catch(error) {
+            console.log(`~~~~ ERROR ${JSON.stringify(error)}`)
+            return handlerInput.responseBuilder
+                .speak("An error occured. Please try again later.")
+                .getResponse();    
+        }
+    }
+};
 
 const HelpIntentHandler = {
     canHandle(handlerInput) {
@@ -75,7 +119,7 @@ const HelpIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
     },
     handle(handlerInput) {
-        const speakOutput = 'You can say hello to me! How can I help?';
+        const speakOutput = `${createListSpeech} or ${getListsSpeech}`;
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -91,52 +135,27 @@ const CancelAndStopIntentHandler = {
                 || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
     },
     handle(handlerInput) {
-        const speakOutput = 'Goodbye!';
-
+        const speakOutput = 'Thanks for checking out the custom list demo!';
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .getResponse();
     }
 };
-/* *
- * FallbackIntent triggers when a customer says something that doesn’t map to any intents in your skill
- * It must also be defined in the language model (if the locale supports it)
- * This handler can be safely added but will be ingnored in locales that do not support it yet 
- * */
-const FallbackIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.FallbackIntent';
-    },
-    handle(handlerInput) {
-        const speakOutput = 'Sorry, I don\'t know about that. Please try again.';
 
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .reprompt(speakOutput)
-            .getResponse();
-    }
-};
-/* *
- * SessionEndedRequest notifies that a session was ended. This handler will be triggered when a currently open 
- * session is closed for one of the following reasons: 1) The user says "exit" or "quit". 2) The user does not 
- * respond or says something that does not match an intent defined in your voice model. 3) An error occurs 
- * */
 const SessionEndedRequestHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'SessionEndedRequest';
     },
     handle(handlerInput) {
-        console.log(`~~~~ Session ended: ${JSON.stringify(handlerInput.requestEnvelope)}`);
         // Any cleanup logic goes here.
-        return handlerInput.responseBuilder.getResponse(); // notice we send an empty response
+        return handlerInput.responseBuilder.getResponse();
     }
 };
-/* *
- * The intent reflector is used for interaction model testing and debugging.
- * It will simply repeat the intent the user said. You can create custom handlers for your intents 
- * by defining them above, then also adding them to the request handler chain below 
- * */
+
+// The intent reflector is used for interaction model testing and debugging.
+// It will simply repeat the intent the user said. You can create custom handlers
+// for your intents by defining them above, then also adding them to the request
+// handler chain below.
 const IntentReflectorHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest';
@@ -151,18 +170,17 @@ const IntentReflectorHandler = {
             .getResponse();
     }
 };
-/**
- * Generic error handling to capture any syntax or routing errors. If you receive an error
- * stating the request handler chain is not found, you have not implemented a handler for
- * the intent being invoked or included it in the skill builder below 
- * */
+
+// Generic error handling to capture any syntax or routing errors. If you receive an error
+// stating the request handler chain is not found, you have not implemented a handler for
+// the intent being invoked or included it in the skill builder below.
 const ErrorHandler = {
     canHandle() {
         return true;
     },
     handle(handlerInput, error) {
-        const speakOutput = 'Sorry, I had trouble doing what you asked. Please try again.';
-        console.log(`~~~~ Error handled: ${JSON.stringify(error)}`);
+        console.log(`~~~~ Error handled: ${error.stack}`);
+        const speakOutput = `Sorry, I had trouble doing what you asked. Please try again.`;
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -171,21 +189,21 @@ const ErrorHandler = {
     }
 };
 
-/**
- * This handler acts as the entry point for your skill, routing all request and response
- * payloads to the handlers above. Make sure any new handlers or interceptors you've
- * defined are included below. The order matters - they're processed top to bottom 
- * */
+// The SkillBuilder acts as the entry point for your skill, routing all request and response
+// payloads to the handlers above. Make sure any new handlers or interceptors you've
+// defined are included below. The order matters - they're processed top to bottom.
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
         CreateListIntentHandler,
+        GetListIntentHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
-        FallbackIntentHandler,
         SessionEndedRequestHandler,
-        IntentReflectorHandler)
+        IntentReflectorHandler, // make sure IntentReflectorHandler is last so it doesn't override your custom intent handlers
+    )
+    .withApiClient(new Alexa.DefaultApiClient()) // Add it to the response builder to get access the to ListManagementClient
     .addErrorHandlers(
-        ErrorHandler)
-    .withCustomUserAgent('sample/hello-world/v1.2')
+        ErrorHandler,
+    )
     .lambda();
