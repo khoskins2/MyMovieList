@@ -3,8 +3,8 @@
 const Alexa = require('ask-sdk-core');
 
 //Take these out
-const createListSpeech = "You can create a list by saying, create a custom list name and the name",
-    getListsSpeech = "You can get lists you created by saying, what are my custom lists";
+const helpSpeech = 'To create a list, say create a list. To delete a list say, delete a list. To add to a list, say add to list. To delete from a list, say delete from list. To rate an item say rate. To review an item, say review.'
+const STOP_MESSAGE = 'Goodbye!';
             
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
@@ -69,6 +69,84 @@ const CreateListIntentHandler = {
     }
 };
 
+const InProgressDeleteListIntentHandler = {
+    canHandle(handlerInput) {
+        const request = handlerInput.requestEnvelope.request;
+        return request.type === 'IntentRequest'
+            && request.intent.name === 'DeleteListIntent'
+            && request.dialogState !== 'COMPLETED';
+    },
+    handle(handlerInput) {
+        const request = handlerInput.requestEnvelope.request;
+        const responseBuilder = handlerInput.responseBuilder;
+        const intent = request.intent;
+
+        return responseBuilder.addDelegateDirective(intent).getResponse();
+    },
+};
+
+
+const CompleteDeleteListIntentHandler = {
+    canHandle(handlerInput) {
+        const request = handlerInput.requestEnvelope.request;
+        return request.type === 'IntentRequest'
+            && request.intent.name === 'DeleteListIntent';
+    },
+    handle(handlerInput) {
+        // Check if permissions has been granted. If not request it.
+        const { permissions } = handlerInput.requestEnvelope.context.System.user
+        if (!permissions) {
+          const permissions = [
+              'write::alexa:household:list',
+              'read::alexa:household:list'
+          ];
+          return handlerInput.responseBuilder
+            .speak('Alexa List permissions are missing. You can grant permissions within the Alexa app.')
+            .withAskForPermissionsConsentCard(permissions)
+            .getResponse();
+        }
+
+        const listClient = handlerInput.serviceClientFactory.getListManagementServiceClient();
+        
+        const listName = Alexa.getSlotValue(handlerInput.requestEnvelope, 'listName');
+       // try {
+
+            const request = handlerInput.requestEnvelope.request;
+            const responseBuilder = handlerInput.responseBuilder;
+            const intent = request.intent;
+    
+            let speechOutput = 'I didn\'t catch your confirmation';
+    
+            if(intent.confirmationStatus === 'CONFIRMED')
+                speechOutput = 'I\'m glad you confirm! ' + STOP_MESSAGE;
+      
+            if(intent.confirmationStatus === 'DENIED')
+                speechOutput = 'Too bad you changed your mind! ' + STOP_MESSAGE;
+
+            return handlerInput.responseBuilder
+                .speak(speechOutput)
+                .getResponse();
+  },
+            //const response = await listClient.deleteList({
+             //   "name": listName,
+             //   "state": "active"
+            //}, "")
+        //To make it not catch this error you must invoke the intent with something like "create list dogs"
+        //} catch(error) {
+         //   console.log(`~~~~ ERROR ${JSON.stringify(error)}`)
+          //  return handlerInput.responseBuilder
+              //  .speak("Your list could not be deleted. Try again.")
+             //   //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+               // .getResponse();
+       // }
+        
+        //return handlerInput.responseBuilder
+        //    .speak("List was successfully deleted.")
+            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+        //    .getResponse();
+    //}
+}
+
 const GetListIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
@@ -119,7 +197,7 @@ const HelpIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
     },
     handle(handlerInput) {
-        const speakOutput = `${createListSpeech} or ${getListsSpeech}`;
+        const speakOutput = `${helpSpeech}`;
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -196,6 +274,8 @@ exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
         CreateListIntentHandler,
+        InProgressDeleteListIntentHandler,
+        CompleteDeleteListIntentHandler,
         GetListIntentHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
