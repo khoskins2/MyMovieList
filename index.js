@@ -69,32 +69,16 @@ const CreateListIntentHandler = {
     }
 };
 
-const InProgressDeleteListIntentHandler = {
+// allows user to add movie to a list 
+const AddMovieIntentHandler = {
     canHandle(handlerInput) {
-        const request = handlerInput.requestEnvelope.request;
-        return request.type === 'IntentRequest'
-            && request.intent.name === 'DeleteListIntent'
-            && request.dialogState !== 'COMPLETED';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AddMovieListIntent';
     },
-    handle(handlerInput) {
-        const request = handlerInput.requestEnvelope.request;
-        const responseBuilder = handlerInput.responseBuilder;
-        const intent = request.intent;
-
-        return responseBuilder.addDelegateDirective(intent).getResponse();
-    },
-};
-
-
-const CompleteDeleteListIntentHandler = {
-    canHandle(handlerInput) {
-        const request = handlerInput.requestEnvelope.request;
-        return request.type === 'IntentRequest'
-            && request.intent.name === 'DeleteListIntent';
-    },
-    handle(handlerInput) {
-        // Check if permissions has been granted. If not request it.
+    async handle(handlerInput) {
         const { permissions } = handlerInput.requestEnvelope.context.System.user
+        
+        // Check if permissions has been granted. If not request it.
         if (!permissions) {
           const permissions = [
               'write::alexa:household:list',
@@ -105,47 +89,89 @@ const CompleteDeleteListIntentHandler = {
             .withAskForPermissionsConsentCard(permissions)
             .getResponse();
         }
-
-        const listClient = handlerInput.serviceClientFactory.getListManagementServiceClient();
         
+        // Create an instance of the ListManagementServiceClient
+        const listClient = handlerInput.serviceClientFactory.getListManagementServiceClient();
+        // trying out Alexa.getSlot instead of getSlotValue
+        const movieName = Alexa.getSlot(handlerInput.requestEnvelope, 'Movie');
         const listName = Alexa.getSlotValue(handlerInput.requestEnvelope, 'listName');
-       // try {
+        
+        // createListItem(listId: string, createListItemRequest: services.listManagement.CreateListItemRequest)
+        //updateListItem(listId: string, itemId: string, updateListItemRequest: services.listManagement.UpdateListItemRequest): 
+        
+        try {
+            const response = await listClient.createListItem(listName, );
 
-            const request = handlerInput.requestEnvelope.request;
-            const responseBuilder = handlerInput.responseBuilder;
-            const intent = request.intent;
-    
-            let speechOutput = 'I didn\'t catch your confirmation';
-    
-            if(intent.confirmationStatus === 'CONFIRMED')
-                speechOutput = 'I\'m glad you confirm! ' + STOP_MESSAGE;
-      
-            if(intent.confirmationStatus === 'DENIED')
-                speechOutput = 'Too bad you changed your mind! ' + STOP_MESSAGE;
+        //To make it not catch this error you must invoke the intent with something like "create list dogs"
+        } catch(error) {
+            console.log(`~~~~ ERROR ${JSON.stringify(error)}`)
+            return handlerInput.responseBuilder
+                .speak("Your list must be given a name. Please try again")
+                //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+                .getResponse();
+        }
+        
+        return handlerInput.responseBuilder
+            .speak("Movie was successfully added.")
+            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+            .getResponse();
+    }
+};
+
+
+const DeleteListIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'DeleteListIntent';
+    },
+    async handle(handlerInput) {
+        const { requestEnvelope } = handlerInput;
+        const { userId } = requestEnvelope.session.user;
+        const listName = Alexa.getSlotValue(requestEnvelope, 'listName');
+
+        // Check if the user has granted permission to Alexa to access their lists
+        const { permissions } = requestEnvelope.context.System.user;
+        if (!permissions || !permissions.consentToken) {
+            return handlerInput.responseBuilder
+                .speak('You must grant permission to access your lists. Check your Alexa app for more details.')
+                .withAskForPermissionsConsentCard(['read::alexa:household:list', 'write::alexa:household:list'])
+                .getResponse();
+        }
+        
+        // Create an instance of the ListManagementServiceClient
+        const listClient = handlerInput.serviceClientFactory.getListManagementServiceClient();
+
+        try {
+            // Get the list ID for the list name provided
+            const lists = await listClient.getListsMetadata({
+                customerId: userId,
+                name: listName,
+            });
+            const list = lists.lists.find(l => l.name.toLowerCase() === listName.toLowerCase());
+            if (!list) {
+                return handlerInput.responseBuilder
+                    .speak(`I'm sorry, I couldn't find a list with the name ${listName}.`)
+                    .getResponse();
+            }
+
+            // Delete the list with the list ID
+            await listClient.deleteList({
+                listId: list.listId,
+                customerId: userId,
+            });
 
             return handlerInput.responseBuilder
-                .speak(speechOutput)
+                .speak(`The ${listName} list has been deleted.`)
                 .getResponse();
-  },
-            //const response = await listClient.deleteList({
-             //   "name": listName,
-             //   "state": "active"
-            //}, "")
-        //To make it not catch this error you must invoke the intent with something like "create list dogs"
-        //} catch(error) {
-         //   console.log(`~~~~ ERROR ${JSON.stringify(error)}`)
-          //  return handlerInput.responseBuilder
-              //  .speak("Your list could not be deleted. Try again.")
-             //   //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-               // .getResponse();
-       // }
-        
-        //return handlerInput.responseBuilder
-        //    .speak("List was successfully deleted.")
-            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-        //    .getResponse();
-    //}
-}
+        } catch (error) {
+            console.error(`Error deleting list: ${error.message}`);
+            return handlerInput.responseBuilder
+                .speak(`There was an error deleting the ${listName} list. Please try again later.`)
+                .getResponse();
+        }
+    },
+};
+
 
 const GetListIntentHandler = {
     canHandle(handlerInput) {
@@ -274,8 +300,7 @@ exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
         CreateListIntentHandler,
-        InProgressDeleteListIntentHandler,
-        CompleteDeleteListIntentHandler,
+        DeleteListIntentHandler,
         GetListIntentHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
