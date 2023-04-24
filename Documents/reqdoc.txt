@@ -1,0 +1,91 @@
+Team Members
+Dustin Bailey and Katie Hoskins
+
+Purpose
+This project allows users to create and maintain lists of movies and TV shows that they have watched as well as movies and TV shows that they want to watch. It will allow people to rate and review movies through the Alexa system and get recommendations from the system and their friends.
+Requirements
+
+1.
+Name: createList
+Type: functional
+Summary: Users shall be able to create lists for their Media.
+
+2. 
+Name: deleteList
+Type: functional
+Summary: Users shall be able to delete a list that they do not want anymore.
+
+3.
+Name: getList
+Type: functional
+Summary: Users shall be able to get their lists that they have and have the items from their lists read to them.
+
+4.	
+Name: addMovie
+Type: functional
+Summary: Movies shall be added to the list that the user chooses, either “watched” or “plan to watch”. 
+
+5.	
+Name: addTv
+Type: functional
+Summary: TV shows shall be added to the list that the user chooses, either “watched” or “plan to watch”.
+
+6.	
+Name: deleteMovie
+Type: functional
+Summary: Movies shall be completely removed from a list.
+
+7.	
+Name: deleteTv
+Type: functional
+Summary: TV shows shall be completely removed from a list.
+
+8.	
+Name: moveMovie
+Type: functional
+Summary: Movies shall be moved from one list to another. Usually “plan to watch” to “watched”.
+
+9.	
+Name: moveTv
+Type: functional
+Summary: TV shows shall be moved from one list to another. Usually “plan to watch” to “watched”.
+
+10.	
+Name: rate
+Type: functional
+Summary: Movies or tv shows shall be rated by the user on a scale from 1 to 5.
+
+11.	
+Name: review
+Type: functional
+Summary: Movies and TV shows shall be reviewed qualitatively.
+
+12.	
+Name: recommendToOther
+Type: functional
+Summary: Media should be send to other users via id or email from another user.
+
+13.	
+Name: help
+Type: functional
+Summary: The application shall tell the user how to use the program.
+
+14.	
+Name: organizeLists
+Type: functional
+Summary: The user should organize the lists based on what user wants (i.e. genre).
+
+15.	
+Name: language
+Type: constraint
+Summary: The system and application shall be able to understand the English language.
+
+16.	
+Name: platformOs
+Type: constraint
+Summary: The software shall only run on Amazon Alexa.
+
+17.	
+Name: signIn
+Type: constraint
+Summary: User shall be signed into their Amazon or Alexa account to use software.
